@@ -1,4 +1,4 @@
-package com.example.kotlin_pr1
+package com.example.kotlin_pr1.UI.View
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
+import com.example.kotlin_pr1.R
 
 class MainFragment : Fragment() {
     override fun onCreateView(

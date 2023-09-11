@@ -1,11 +1,11 @@
-package com.example.kotlin_pr1
+package com.example.kotlin_pr1.UI.View
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import com.example.kotlin_pr1.R
 
 class FirstFragment : Fragment() {
     @SuppressLint("MissingInflatedId")

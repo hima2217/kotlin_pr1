@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:onClick="toFirstFragment"
-    tools:context=".MainFragment">
+    tools:context=".UI.View.MainFragment">
 
     <Button
         android:id="@+id/FirstButton"
