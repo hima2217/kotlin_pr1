@@ -8,9 +8,20 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
+import com.example.kotlin_pr1.Data.DataSource.Product.ProductRepository
 import com.example.kotlin_pr1.R
+import javax.inject.Inject
 
 class MainFragment : Fragment() {
+
+    @Inject
+    lateinit var productRepository: ProductRepository
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        (requireActivity().application as MyApplication).appComponent.inject(this)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
