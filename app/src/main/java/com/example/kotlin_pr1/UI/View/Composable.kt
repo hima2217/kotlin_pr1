@@ -2,6 +2,8 @@ package com.example.kotlin_pr1.UI.View
 
 import android.os.Build
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import org.w3c.dom.Text
+
+data class Student(val name: String, val group: String)
 
 private val textStyle =
 
@@ -59,7 +63,7 @@ fun StudentInfo(studentName: String, group: String) {
 }
 
 @Composable
-fun MyApp(studentName: String, group: String) {
+fun MyApp(students: List<Student>) {
     MaterialTheme(
         typography = Typography(
             TextStyle(
@@ -72,7 +76,11 @@ fun MyApp(studentName: String, group: String) {
                 color = MaterialTheme.colorScheme.inversePrimary,
                 modifier = Modifier.fillMaxSize()
             ) {
-                StudentInfo(studentName, group)
+                LazyColumn {
+                    items(students) { student ->
+                        StudentInfo(student.name, student.group)
+                    }
+                }
             }
         }
     )
