@@ -1,6 +1,7 @@
 package com.example.kotlin_pr1.UI.View
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,9 +34,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import kotlinx.coroutines.launch
+
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+
+
 
 data class Student(val name: String, val group: String)
 
@@ -111,16 +118,13 @@ fun StudentDetailScreen(student: Student) {
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyApp(students: List<Student>) {
+fun MyApp(students: List<Student>, context: Context) {
     val navController = rememberNavController()
 
-    //val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
-
     Scaffold(
-        //scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 title = {
@@ -128,23 +132,18 @@ fun MyApp(students: List<Student>) {
                 }
             )
         },
-
         bottomBar = {
-            // BottomAppBar - добавьте здесь элементы нижней панели
             BottomAppBar(
                 containerColor = Color.Blue
-                //Shape = CircleShape
             ) {
-                // Добавьте элементы нижней панели
                 IconButton(
                     onClick = {
-                        // Обработка нажатия на элемент нижней панели
-                        scope.launch {
-                            //scaffoldState.drawerState.open()
-                        }
+                        // Здесь мы запускаем работу с WorkManager при нажатии на кнопку
+                        val workRequest = OneTimeWorkRequestBuilder<MyWorker>().build()
+                        WorkManager.getInstance(context).enqueue(workRequest)
                     }
                 ) {
-                    Icon(imageVector = Icons.Default.Menu, contentDescription = "Меню")
+                    Icon(imageVector = Icons.Default.Build, contentDescription = "Меню")
                 }
             }
         }

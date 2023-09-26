@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         )
         //setContentView(R.layout.activity_main)
         setContent {
-            MyApp(students)
+            MyApp(students, applicationContext)
         }
     }
 }
