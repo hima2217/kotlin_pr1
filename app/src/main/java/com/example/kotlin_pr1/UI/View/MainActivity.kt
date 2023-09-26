@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val students = listOf(
+            Student("", ""),
             Student("Лебедев Даниил", "ИКБО-25-21"),
             Student("Игорь Шевелев", "ИКБО-25-21"),
             Student("Эрик картман", "ИКБО-15-99"),
