@@ -21,7 +21,6 @@ class MyWorker(context: Context, workerParams: WorkerParameters) :
             Log.d("doWork", "Началось выполнение работы")
             //delay(5000)
 
-            // Создаем всплывающее уведомление
             val notification = NotificationCompat.Builder(applicationContext, "channel_id")
                 .setSmallIcon(R.drawable.ic_launcher_foreground) // Проверьте, что "ic_notification" - это правильное имя вашей иконки
                 .setContentTitle("Ворк")
