@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,10 +34,16 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.example.kotlin_pr1.R
 import kotlinx.coroutines.launch
 
 data class Student(val name: String, val group: String)
 
+enum class Screen {
+    Home,
+    Menu
+}
 private val textStyle =
     TextStyle(
         fontFamily = FontFamily.SansSerif,
@@ -74,6 +79,44 @@ fun StudentInfo(studentName: String, group: String) {
         )
     }
 }
+@Composable
+fun DrawerItem(
+    screen: Screen,
+    currentScreen: Screen,
+    onClick: (Screen) -> Unit
+) {
+    Text(
+        text = stringResource(id = R.string.screen_home),
+        style = textStyle,
+        modifier = Modifier
+            .padding(16.dp)
+            .clickable {
+                if (screen != currentScreen) {
+                    onClick(screen)
+                }
+            }
+    )
+}
+
+@Composable
+fun DrawerContent(
+    currentScreen: Screen,
+    onScreenSelected: (Screen) -> Unit
+) {
+    Column {
+        DrawerItem(
+            screen = Screen.Home,
+            currentScreen = currentScreen,
+            onClick = onScreenSelected
+        )
+        DrawerItem(
+            screen = Screen.Menu,
+            currentScreen = currentScreen,
+            onClick = onScreenSelected
+        )
+    }
+}
+
 
 @Composable
 fun StudentListScreen(students: List<Student>, navigateToDetail: (Student) -> Unit) {
@@ -111,16 +154,15 @@ fun StudentDetailScreen(student: Student) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp(students: List<Student>) {
     val navController = rememberNavController()
-
-    //val scaffoldState = rememberScaffoldState()
+    val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    var currentScreen by remember { mutableStateOf(Screen.Home) } // Замените на mutableStateOf
 
     Scaffold(
-        //scaffoldState = scaffoldState,
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 title = {
@@ -128,25 +170,32 @@ fun MyApp(students: List<Student>) {
                 }
             )
         },
-
         bottomBar = {
-            // BottomAppBar - добавьте здесь элементы нижней панели
             BottomAppBar(
-                containerColor = Color.Blue
-                //Shape = CircleShape
+                backgroundColor = Color.Blue
             ) {
-                // Добавьте элементы нижней панели
+
                 IconButton(
                     onClick = {
-                        // Обработка нажатия на элемент нижней панели
                         scope.launch {
-                            //scaffoldState.drawerState.open()
+                            scaffoldState.drawerState.open()
                         }
                     }
                 ) {
                     Icon(imageVector = Icons.Default.Menu, contentDescription = "Меню")
                 }
             }
+        },
+        drawerContent = {
+            DrawerContent(
+                currentScreen = currentScreen,
+                onScreenSelected = { newScreen ->
+                    currentScreen = newScreen // Обновляем currentScreen с использованием mutableStateOf
+                    scope.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                }
+            )
         }
     ) { innerPadding ->
         NavHost(
@@ -154,7 +203,6 @@ fun MyApp(students: List<Student>) {
             startDestination = "studentList"
         ) {
             composable("studentList") {
-                // Экран со списком студентов
                 StudentListScreen(students) { student ->
                     navController.navigate("studentDetail/${student.name}/${student.group}")
                 }
@@ -166,7 +214,6 @@ fun MyApp(students: List<Student>) {
                     navArgument("group") { type = NavType.StringType }
                 )
             ) { backStackEntry ->
-                // Экран с подробной информацией о студенте
                 val studentName = backStackEntry.arguments?.getString("studentName")
                 val group = backStackEntry.arguments?.getString("group")
                 if (studentName != null && group != null) {
