@@ -51,7 +51,6 @@ private val textStyle =
         fontWeight = FontWeight.Bold,
         color = Color.Black
     )
-// Другие стили
 /*
    TextStyle(
        fontFamily = FontFamily.Serif,
